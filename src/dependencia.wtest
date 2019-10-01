@@ -1,0 +1,43 @@
+import rodados.*
+import municipalidad.*
+
+describe "Test deportes" {
+
+	var deportes = new Dependencia()
+	var cultura = new Dependencia()
+	var cachito = new ChevroletCorsa()
+	var corsaAzul = new ChevroletCorsa()
+	var corsaVerde = new ChevroletCorsa()
+	var kWid = new RenaultKwid()
+	var autoEspecial = new AutoEspecial()
+	var kWid1 = new RenaultKwid()
+	var kWid2 = new RenaultKwid()
+
+	fixture {
+		deportes.cantidadDeEmpleados(45)
+		cultura.cantidadDeEmpleados(31)
+		cachito.color(rojo)
+		corsaAzul.color(azul)
+		corsaVerde.color(verde)
+		kWid.tieneTanqueAdicional(true)
+		kWid1.tieneTanqueAdicional(true)
+		kWid2.tieneTanqueAdicional(false)
+		autoEspecial.capacidad(5)
+		autoEspecial.velocidadMaxima(160)
+		autoEspecial.peso(1200)
+		autoEspecial.color(cremita)
+		deportes.flota([ cachito, corsaAzul, corsaVerde, autoEspecial ])
+		trafic.interior(interiorPopular)
+		trafic.motor(motorBataton)
+		cultura.flota([ cachito, kWid1, kWid2, trafic ])
+	}
+
+	test"flota" {
+		assert.equals(5100, deportes.pesoTotalFlota())
+		assert.equals(9350, cultura.pesoTotalFlota())
+	}
+//
+//	el peso total de la flota, si está o no bien equipada, 
+//	la capacidad total en color azul, el color del rodado más rápido, 
+//	si es grande o no, y la capacidad faltante. 
+}
