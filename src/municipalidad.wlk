@@ -46,6 +46,21 @@ class Dependencia {
 	method esGrande() {
 		return cantidadDeEmpleados >= 40 and flota.size() >= 5
 	}
+	method totalPasajeros() {
+		return pedidos.sum { p => p.cantidadPasajeros() }
+	}
+	
+	method esIncompatibleParaTodos(color) {
+		return pedidos.all { p => p.esColorIncompatible(color) }
+	}
+	
+	method pedidosSinSatisfacer() {
+		return pedidos.filter { p => not self.algunAutoPuedeSatisfacer(p) }
+	}
+	
+	method algunAutoPuedeSatisfacer(pedido) {
+		return flota.any { v => pedido.puedeSerSatisfecho(v) }
+	}
 }
 class Pedidos{
 var property distanciaARecorrer
