@@ -1,17 +1,25 @@
-
 class Dependencia {
-	var property flota = []	
+
+	var property flota = []
+	var property pedidos = []
 	var property cantidadDeEmpleados
-	
-	method agregarAFlota(vehiculo) { flota.add(vehiculo) }
-	method quitarDeFlota(vehiculo) { flota.remove(vehiculo) }
-	
+
+	method agregarAFlota(vehiculo) {
+		flota.add(vehiculo)
+	}
+
+	method quitarDeFlota(vehiculo) {
+		flota.remove(vehiculo)
+	}
+
 	// la suma del peso de cada rodado afectado a la flota 
-	method pesoTotalFlota() { return flota.sum({ veh => veh.peso() }) }
-	
+	method pesoTotalFlota() {
+		return flota.sum({ veh => veh.peso() })
+	}
+
 	// es verdadero si la flota tiene al menos 3 rodados, y además, 
 	// todos los rodados de la flota pueden ir al menos a 100 km/h
-	method estaBienEquipada() { 
+	method estaBienEquipada() {
 		return flota.size() >= 3 and flota.all({ veh => veh.velocidadMaxima() >= 100 })
 	}
 
@@ -21,56 +29,48 @@ class Dependencia {
 	method capacidadTotalEnColor(color) {
 		return flota.filter({ veh => veh.color() == color }).sum({ veh => veh.capacidad() })
 	}
+
 	// una variante que usa un método auxiliar
 	method capacidadTotalEnColor_variante(color) {
 		return self.vehiculosDeColor(color).sum({ veh => veh.capacidad() })
 	}
+
 	method vehiculosDeColor(color) {
 		return flota.filter({ veh => veh.color() == color })
 	}
-	
+
 	method colorDelRodadoMasRapido() {
 		return flota.max({ veh => veh.velocidadMaxima() }).color()
 	}
-	
+
 	// el resultado de restar, de la cantidad de empleados, 
 	// la capacidad sumada de los vehículos de la flota
 	method capacidadFaltante() {
 		return cantidadDeEmpleados - self.capacidadFlota()
 	}
-	method capacidadFlota() { 
+
+	method capacidadFlota() {
 		return flota.sum({ veh => veh.capacidad() })
 	}
-	
-	//  la condición es que la dependencia tenga al menos 40 empleados y 5 rodados
+
+	// la condición es que la dependencia tenga al menos 40 empleados y 5 rodados
 	method esGrande() {
 		return cantidadDeEmpleados >= 40 and flota.size() >= 5
 	}
+
 	method totalPasajeros() {
-		return pedidos.sum { p => p.cantidadPasajeros() }
+		return pedidos.sum{ p => p.cantidadPasajeros() }
 	}
-	
+
 	method esIncompatibleParaTodos(color) {
-		return pedidos.all { p => p.esColorIncompatible(color) }
+		return pedidos.all{ p => p.esColorIncompatible(color) }
 	}
-	
+
 	method pedidosSinSatisfacer() {
-		return pedidos.filter { p => not self.algunAutoPuedeSatisfacer(p) }
+		return pedidos.filter{ p => not self.algunAutoPuedeSatisfacer(p) }
 	}
-	
+
 	method algunAutoPuedeSatisfacer(pedido) {
-		return flota.any { v => pedido.puedeSerSatisfecho(v) }
+		return flota.any{ v => pedido.puedeSerSatisfecho(v) }
 	}
-}
-class Pedidos{
-var property distanciaARecorrer
-var property tiempoMaximo
-var property cantidadDePasajeros
-var property coloresIncompatibles=#{}
-    method velocidadRequerida()=distanciaARecorrer/tiempoMaximo
-    method satisfacePedido(veh){
-    	return veh.velocidadMaxima()+10 >  self.velocidadRequerida() and
-    	       veh.capacidad() <= cantidadDePasajeros and
-    	       !coloresIncompatibles.contains(veh.color())
-    }
 }

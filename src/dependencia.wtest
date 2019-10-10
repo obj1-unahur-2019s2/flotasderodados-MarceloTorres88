@@ -1,5 +1,6 @@
-import rodados.*
-import municipalidad.*
+import vehiculos.*
+import dependencias.*
+import pedidos.*
 
 describe "Test deportes" {
 
